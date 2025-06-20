@@ -135,7 +135,7 @@ app.get('/api/users', (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching dogs:', err);
-      return res.status(500).json({ error: 'Failed to fetch dogs' });
+      return res.status(500).json({ error: 'Failed to fetch walkrequests' });
     }
     res.json(results);
   });
