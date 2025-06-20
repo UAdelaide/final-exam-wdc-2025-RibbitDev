@@ -211,5 +211,6 @@ function logout(){
     xmlhttp.send();
 
     sessionStorage.clear();
+    window
 
 }
