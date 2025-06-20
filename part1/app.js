@@ -1,86 +1,3 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var mysql = require('mysql2/promise');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-let db;
-
-(async () => {
-  try {
-    // Connect to MySQL without specifying a database
-    const connection = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '' // Set your MySQL root password
-    });
-
-    // Create the database if it doesn't exist
-    await connection.query('CREATE DATABASE IF NOT EXISTS DogWalkService');
-    await connection.end();
-
-    // Now connect to the created database
-    db = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      database: 'DogWalkService'
-    });
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-app.get('/api/dogs', async (req, res) => {
-  try {
-    const [rows] = await db.query(`
-      SELECT Dogs.name AS dog_name, Dogs.size, Owners.username AS owner_username
-      FROM Dogs
-      JOIN Owners ON Dogs.owner_id = Owners.id
-    `);
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch dogs' });
-  }
-});
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-  }
-
-
-
-module.exports = app;
-
-
 
 var express = require('express');
 var path = require('path');
@@ -124,15 +41,18 @@ let db;
 })();
 
 // Route to return books as JSON
-app.get('/', async (req, res) => {
+app.get('/api/dogs', async (req, res) => {
   try {
-    const [books] = await db.execute('SELECT * FROM books');
-    res.json(books);
+    const [rows] = await db.query(`
+      SELECT Dogs.name AS dog_name, Dogs.size, Owners.username AS owner_username
+      FROM Dogs
+      JOIN Owners ON Dogs.owner_id = Owners.id
+    `);
+    res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch books' });
+    res.status(500).json({ error: 'Failed to fetch dogs' });
   }
 });
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 module.exports = app;
