@@ -128,7 +128,19 @@ app.get('/api/dogs', (req, res) => {
 });
 
 app.get('/api/dogs', async (req, res) => {
-    db.query('SELECT Dogs.dog_id, Dogs.name, Dogs.size FROM Dogs', (err, results) => {
+    db.query('
+    SELECT
+    WalkRequests.request_id,
+    Dogs.name AS dog_name,
+    WalkRequests.requested_time,
+    WalkRequests.duration_minutes,
+    WalkRequests.location,
+    Users.username AS owner_username
+    FROM WalkRequests
+    JOIN WalkRequests ON Dogs.owner_id = Dogs.dog_id
+    JOIN Users ON Dogs.owner_id = Users.user_id
+    WHERE WalkRequests.status = 'open'
+  `, (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Failed to fetch Dogs' });
