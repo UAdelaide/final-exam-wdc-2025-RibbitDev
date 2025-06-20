@@ -87,13 +87,17 @@ app.use(function(err, req, res, next) {
 });
 
 app.get('/api/dogs', async (req, res) => {
-    db.query('SELECT Dogs.dog_id, Dogs.name, Dogs.size FROM Dogs', (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Failed to fetch Dogs' });
-        }
-        res.json(results);
-    });
+  try {
+    const [rows] = await db.query(`
+      SELECT Dogs.name AS dog_name, Dogs.size, Owners.username AS owner_username
+      FROM Dogs
+      JOIN Owners ON Dogs.owner_id = Owners.id
+    `);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch dogs' });
+  }
 });
+
 
 module.exports = app;
