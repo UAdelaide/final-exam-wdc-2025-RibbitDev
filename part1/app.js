@@ -9,7 +9,6 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-const mysql = require('mysql');
 let db;
 
 db = mysql.createConnection({
