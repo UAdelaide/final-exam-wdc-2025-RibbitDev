@@ -10,8 +10,13 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 let db:
-(async () => {
-    try {
+  db = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'DogWalkService'
+      });
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
