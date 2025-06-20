@@ -139,7 +139,7 @@ app.get('/api/walkrequests/open', (req, res) => {
     Users.username AS owner_username
     FROM WalkRequests
     JOIN WalkRequests ON Dogs.owner_id = Dogs.dog_id
-    JOIN WalkRequests ON Dogs.owner_id = Dogs.dog_id
+    JOIN Users ON Dogs.owner_id = Users.user_id
   `;
   db.query(sql, (err, results) => {
     if (err) {
