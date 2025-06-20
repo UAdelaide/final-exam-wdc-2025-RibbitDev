@@ -8,7 +8,8 @@ router.get('/', function(req, res, next) {
 
 SELECT dog.dog_name, user.username
 FROM Dog
-JOIN dog ON dog.dog_id =
+JOIN dog ON dog.dog_id = user_dog.dog_id
+GROUP BY U
 router.get()
 
 module.exports = router;
