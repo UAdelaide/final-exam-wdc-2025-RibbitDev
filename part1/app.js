@@ -136,7 +136,4 @@ app.get('/api/dogs', (req, res) => {
   });
 });
 
-
-
-
 module.exports = app;
