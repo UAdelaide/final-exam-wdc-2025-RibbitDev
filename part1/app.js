@@ -64,6 +64,14 @@ function seedDatabase() {
     FOREIGN KEY (request_id) REFERENCES WalkRequests(request_id),
     FOREIGN KEY (walker_id) REFERENCES Users(user_id)
   );
+   CREATE TABLE IF NOT EXISTS WalkRatings (
+    rating_id INT AUTO_INCREMENT PRIMARY KEY,
+    walker_id INT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT,
+    rated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (walker_id) REFERENCES Users(user_id)
+  );
   `;
 
   db.query(createTablesSQL, (err) => {
