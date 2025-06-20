@@ -148,3 +148,28 @@ app.get('/api/walkrequests/open', (req, res) => {
         res.json(results);
     });
 });
+
+app.get('/api/walkers/summary', (req, res) => {
+    db.query(`
+        SELECT
+            u.username AS walker_username,
+            COUNT(r.rating_id) AS total_ratings,
+            ROUND(AVG(r.rating), 1) AS average_rating,
+            COUNT(DISTINCT CASE
+                WHEN wr.status = 'completed' AND a.status = 'accepted' THEN wr.request_id
+                ELSE NULL
+            END) AS completed_walks
+        FROM Users u
+        LEFT JOIN WalkApplications a ON a.walker_id = u.user_id
+        LEFT JOIN WalkRequests wr ON wr.request_id = a.request_id
+        LEFT JOIN WalkRatings r ON r.walker_id = u.user_id
+        WHERE u.role = 'walker'
+        GROUP BY u.user_id
+    `, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Failed to fetch walker summary' });
+        }
+        res.json(results);
+    });
+});
