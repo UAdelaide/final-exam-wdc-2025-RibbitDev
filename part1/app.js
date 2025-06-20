@@ -141,7 +141,7 @@ app.get('/api/walkrequests/open', (req, res) => {
     JOIN WalkRequests ON Dogs.owner_id = Dogs.dog_id
     JOIN Users ON Dogs.owner_id = Users.user_id
     WHERE WalkRequests.status = 'open'
-  `,
+  `, (err, results) =>
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Failed to fetch walkrequests:', err);
