@@ -129,6 +129,7 @@ app.get('/api/dogs', (req, res) => {
 app.get('/api/users', (req, res) => {
   const sql = `
     SELECT WalkRequests.request_id AS request_id, Dogs.size, Users.username AS owner_username
+    Dogs.name AS dog_name,
     FROM Dogs
     JOIN Users ON Dogs.owner_id = Users.user_id
   `;
