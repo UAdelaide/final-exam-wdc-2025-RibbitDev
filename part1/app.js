@@ -43,7 +43,7 @@ app.get('/', async (req, res) => {
     const [dog_id] = await db.execute('SELECT * FROM Dogs');
     res.json(dogs);
     } catch (err) {
-      res.status()
+      res.status(500).json({ error: 'Failed to fetch '})
     }
 })
 
