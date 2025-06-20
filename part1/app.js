@@ -22,7 +22,7 @@ db = mysql.createConnection({
 
 db.connect((err) => {
   if (err) {
-    console.error('❌ Error connecting to database:', err);
+    console.error('Cannot connect to the database:', err);
     return;
   }
   console.log('✅ Connected to MySQL');
@@ -62,7 +62,7 @@ function seedDatabase() {
 
   db.query(createTablesSQL, (err) => {
     if (err) {
-      console.error('Issue creating tables:', err);
+      console.error('Issue making the tables:', err);
       return;
     }
 
