@@ -21,10 +21,12 @@ db = mysql.createConnection({
 
 db.connect((err) => {
   if (err) {
-    console.error('Cannot connect to the database:', err);
+    console.error('Error connecting to database:', err);
     return;
   }
-  console.log('Successfully connected to MySQL');
+  console.log('Connected to MySQL');
+
+  // Seed the database after successful connection
   seedDatabase();
 });
 
@@ -59,10 +61,11 @@ function seedDatabase() {
 
   db.query(createTablesSQL, (err) => {
     if (err) {
-      console.error('Issue making the tables:', err);
+      console.error('Error creating tables:', err);
       return;
     }
 
+    // Insert sample users
     const insertUsersSQL = `
       INSERT IGNORE INTO Users (username, email, password_hash, role) VALUES
       ('alice123', 'alice@example.com', 'hashed123', 'owner'),
@@ -73,6 +76,7 @@ function seedDatabase() {
     db.query(insertUsersSQL, (err) => {
       if (err) return console.error('Error inserting users:', err);
 
+      // Insert sample dogs
       const insertDogsSQL = `
         INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
         ((SELECT user_id FROM Users WHERE username='alice123'), 'Max', 'medium'),
@@ -82,6 +86,7 @@ function seedDatabase() {
       db.query(insertDogsSQL, (err) => {
         if (err) return console.error('Error inserting dogs:', err);
 
+        // Insert walk requests
         const insertWalksSQL = `
           INSERT IGNORE INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
           ((SELECT dog_id FROM Dogs WHERE name='Max'), '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
@@ -90,13 +95,14 @@ function seedDatabase() {
 
         db.query(insertWalksSQL, (err) => {
           if (err) return console.error('Error inserting walk requests:', err);
-          console.log('Successfully seeded database');
+          console.log('Database seeded.');
         });
       });
     });
   });
 }
 
+// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -109,22 +115,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
-app.get('/api/dogs', (req, res) => {
-  const sql = `
-    SELECT
-    Dogs.name AS dog_name,
-    Dogs.size, Users.username AS owner_username
-    FROM Dogs
-    JOIN Users ON Dogs.owner_id = Users.user_id
-  `;
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error fetching dogs:', err);
-      return res.status(500).json({ error: 'Failed to fetch dogs' });
-    }
-    res.json(results);
-  });
+app.get('/api/dogs', async (req, res) => {
+    db.query('SELECT Dogs.dog_id, Dogs.name, Dogs.size FROM Dogs', (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Failed to fetch Dogs' });
+        }
+        res.json(results);
+    });
 });
 
 app.get('/api/walkrequests/open', (req, res) => {
@@ -149,7 +147,7 @@ app.get('/api/walkrequests/open', (req, res) => {
     });
 });
 
-app.get('/api/walkers/summary', (req, res) => {
+app.get('/api/walkrequests/summary', (req, res) => {
     db.query(`
         SELECT
             u.username AS walker_username,
@@ -176,4 +174,6 @@ app.get('/api/walkers/summary', (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 module.exports = app;
+
