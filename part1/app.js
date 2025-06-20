@@ -118,14 +118,7 @@ app.get('/dogs', async (req, res) => {
         }
         res.json(results);
     });
-
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error fetching dogs:', err);
-      return res.status(500).json({ error: 'Failed to fetch dogs' });
-    }
-    res.json(results);
-  });
 });
+
 
 module.exports = app;
