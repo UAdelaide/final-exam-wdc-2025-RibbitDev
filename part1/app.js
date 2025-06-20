@@ -9,6 +9,13 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+db = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'DogWalkService'
+      });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -38,7 +45,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/', async (req, res) => {
+app.get('/apidogs', async (req, res) => {
   try{
     const [ dog_id, size, owner_id] = await db.execute('SELECT * FROM Dogs');
     res.json(dogs);
