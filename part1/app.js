@@ -116,15 +116,6 @@ app.get('/api/dogs', (req, res) => {
     FROM Dogs
     JOIN Users ON Dogs.owner_id = Users.user_id
   `;
-  app.get('/dogs', async (req, res) => {
-    db.query('SELECT Dogs.dog_id, Dogs.name, Dogs.size FROM Dogs', (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Failed to fetch Dogs' });
-        }
-        res.json(results);
-    });
-});
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching dogs:', err);
