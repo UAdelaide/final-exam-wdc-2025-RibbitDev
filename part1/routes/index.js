@@ -9,3 +9,9 @@ router.get('/', function(req, res, next) {
 router.get()
 
 module.exports = router;
+
+
+SELECT actor.first_name, actor.last_name, COUNT(film_actor.film_id) AS number_films
+FROM actor
+JOIN film_actor ON actor.actor_id = film_actor.actor_id
+GROUP BY actor.actor_id;
