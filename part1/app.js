@@ -11,91 +11,50 @@ var app = express();
 
 let db;
 
-db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'DogWalkService',
-  multipleStatements: true
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error('Cannot connect to the database:', err);
-    return;
-  }
-  console.log('Successfully connected to MySQL');
-  seedDatabase();
-});
-
-function seedDatabase() {
-  const createTablesSQL = `
-    CREATE TABLE IF NOT EXISTS Users (
-      user_id INT AUTO_INCREMENT PRIMARY KEY,
-      username VARCHAR(50) UNIQUE NOT NULL,
-      email VARCHAR(100) UNIQUE NOT NULL,
-      password_hash VARCHAR(255) NOT NULL,
-      role ENUM('owner', 'walker') NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    CREATE TABLE IF NOT EXISTS Dogs (
-      dog_id INT AUTO_INCREMENT PRIMARY KEY,
-      owner_id INT NOT NULL,
-      name VARCHAR(50) NOT NULL,
-      size ENUM('small', 'medium', 'large') NOT NULL,
-      FOREIGN KEY (owner_id) REFERENCES Users(user_id)
-    );
-    CREATE TABLE IF NOT EXISTS WalkRequests (
-      request_id INT AUTO_INCREMENT PRIMARY KEY,
-      dog_id INT NOT NULL,
-      requested_time DATETIME NOT NULL,
-      duration_minutes INT NOT NULL,
-      location VARCHAR(255) NOT NULL,
-      status ENUM('open', 'accepted', 'completed', 'cancelled') DEFAULT 'open',
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (dog_id) REFERENCES Dogs(dog_id)
-    );
-  `;
-
-  db.query(createTablesSQL, (err) => {
-    if (err) {
-      console.error('Issue making the tables:', err);
-      return;
-    }
-
-    const insertUsersSQL = `
-      INSERT IGNORE INTO Users (username, email, password_hash, role) VALUES
-      ('alice123', 'alice@example.com', 'hashed123', 'owner'),
-      ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
-      ('carol123', 'carol@example.com', 'hashed789', 'owner');
-    `;
-
-    db.query(insertUsersSQL, (err) => {
-      if (err) return console.error('Error inserting users:', err);
-
-      const insertDogsSQL = `
-        INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
-        ((SELECT user_id FROM Users WHERE username='alice123'), 'Max', 'medium'),
-        ((SELECT user_id FROM Users WHERE username='carol123'), 'Bella', 'small');
-      `;
-
-      db.query(insertDogsSQL, (err) => {
-        if (err) return console.error('Error inserting dogs:', err);
-
-        const insertWalksSQL = `
-          INSERT IGNORE INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
-          ((SELECT dog_id FROM Dogs WHERE name='Max'), '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
-          ((SELECT dog_id FROM Dogs WHERE name='Bella'), '2025-06-10 09:30:00', 45, 'Beachside Ave', 'open');
-        `;
-
-        db.query(insertWalksSQL, (err) => {
-          if (err) return console.error('Error inserting walk requests:', err);
-          console.log('Successfully seeded database');
-        });
+(async () => {
+    try {
+      // Connect to MySQL without specifying a database
+      const connection = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '' // Set your MySQL root password
       });
-    });
-  });
-}
+
+      // Create the database if it doesn't exist
+      await connection.query('CREATE DATABASE IF NOT EXISTS DogWalkService');
+      await connection.end();
+
+      // Now connect to the created database
+      db = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'DogWalkService'
+      });
+
+      // Create a table if it doesn't exist
+    //   await db.execute(`
+    //     CREATE TABLE IF NOT EXISTS books (
+    //       id INT AUTO_INCREMENT PRIMARY KEY,
+    //       title VARCHAR(255),
+    //       author VARCHAR(255)
+    //     )
+    //   `);
+
+      // Insert data if table is empty
+//       const [rows] = await db.execute('SELECT COUNT(*) AS count FROM Users');
+//       if (rows[0].count === 0) {
+//         await db.execute(`
+//           INSERT INTO books (title, author) VALUES
+//           ('1984', 'George Orwell'),
+//           ('To Kill a Mockingbird', 'Harper Lee'),
+//           ('Brave New World', 'Aldous Huxley')
+//         `);
+//       }
+    } catch (err) {
+      console.error('Error setting up database. Ensure Mysql is running: service mysql start', err);
+    }
+  })();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
