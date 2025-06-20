@@ -25,7 +25,7 @@ db.connect((err) => {
     console.error('Cannot connect to the database:', err);
     return;
   }
-  console.log('✅ Connected to MySQL');
+  console.log('Successfully connected to MySQL');
 
   // Seed the database after successful connection
   seedDatabase();
