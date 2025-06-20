@@ -6,8 +6,13 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+SELECT dog.dog_name, user.user
 router.get()
 
 module.exports = router;
 
 
+SELECT dog.dog_name, user.username.
+FROM User
+JOIN dog ON actor.actor_id = film_actor.actor_id
+GROUP BY actor.actor_id;
