@@ -40,7 +40,7 @@ app.use(function(err, req, res, next) {
 
 app.get('/', async (req, res) => {
   try{
-    const []
+    const [dog_id] = wait db.execute('SELECT * ')
   }
 })
 
