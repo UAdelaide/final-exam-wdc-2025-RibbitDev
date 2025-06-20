@@ -86,7 +86,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/dogs', async (req, res) => {
+app.get('/api/dogs', async (req, res) => {
     db.query('SELECT Dogs.dog_id, Dogs.name, Dogs.size FROM Dogs', (err, results) => {
         if (err) {
             console.error(err);
