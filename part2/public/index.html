@@ -60,7 +60,7 @@
           };
 
           const user = users[this.username];
-          // Checks if the user and the password exists  & matches
+          // password check
           if (!user || user.password !== this.password) {
             this.error = 'Invalid username or password.';
             return;
