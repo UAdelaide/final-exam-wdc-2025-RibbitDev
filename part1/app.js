@@ -3,11 +3,34 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const mysql = require
+const mysql = require('mysql');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+const mysql = require('mysql');
+let db;
+
+db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'DogWalkService',
+  multipleStatements: true
+});
+
+db.connect((err) => {
+  if (err) {
+    console.error('❌ Error connecting to database:', err);
+    return;
+  }
+  console.log('✅ Connected to MySQL');
+
+  // Seed the database after successful connection
+  seedDatabase();
+});
+
 
 
 
