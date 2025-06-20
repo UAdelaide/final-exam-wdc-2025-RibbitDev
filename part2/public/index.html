@@ -40,6 +40,26 @@
     }).mount('#app');
   </script>
 
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          message: 'Welcome to the Dog Walking Service!',
+          username: '',
+          password: ''
+        };
+      },
+      methods: {
+        login() {
+          alert(`Logging in as ${this.username}`);
+          // Add your login logic here
+        }
+      }
+    }).mount('#app');
+  </script>
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
