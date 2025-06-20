@@ -19,6 +19,7 @@
  <form @submit.prevent="login" class="bg-white p-4 rounded shadow-sm mb-4" style="max-width: 500px;">
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
+        <input v-model="username" type="text" class="form-control form-control-lg bg-warning-subtle" id="username" required>
         <input type="text" id="username" class="form-control" v-model="username" required>
       </div>
       <div class="mb-3">
