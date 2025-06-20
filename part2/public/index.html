@@ -13,9 +13,17 @@
     <h1 class="mb-4 text-primary">{{ message }}</h1>
     <p class="lead">Connect with trusted walkers for your beloved dog!</p>
   <form @submit.prevent="login" class="bg-white p-4 rounded shadow-sm mb-4">
-    <label for="username" class="form-label">username</label>
-    <label for="password" class="form-label">password</label>
-    <button type="submit">LogIn</button>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" class="form-control" v-model="username" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" v-model="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
     </form>
     <a href="owner-dashboard.html" class="btn btn-outline-primary me-2">Owner Dashboard</a>
     <a href="walker-dashboard.html" class="btn btn-outline-success">Walker Dashboard</a>
