@@ -38,5 +38,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+aoo.get('/', async )
 
 module.exports = app;
