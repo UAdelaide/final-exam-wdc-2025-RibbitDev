@@ -83,7 +83,6 @@ function seedDatabase() {
       db.query(insertDogsSQL, (err) => {
         if (err) return console.error('Error inserting dogs:', err);
 
-        // Insert walk requests
         const insertWalksSQL = `
           INSERT IGNORE INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
           ((SELECT dog_id FROM Dogs WHERE name='Max'), '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
@@ -99,8 +98,6 @@ function seedDatabase() {
   });
 }
 
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -113,14 +110,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
