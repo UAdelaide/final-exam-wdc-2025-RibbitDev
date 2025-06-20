@@ -96,7 +96,7 @@ function seedDatabase() {
 
         db.query(insertWalksSQL, (err) => {
           if (err) return console.error('Error inserting walk requests:', err);
-          console.log('✅ Database seeded.');
+          console.log('Successfully ');
         });
       });
     });
