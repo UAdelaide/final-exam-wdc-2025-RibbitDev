@@ -116,7 +116,7 @@ app.get('/api/dogs', (req, res) => {
     FROM Dogs
     JOIN Users ON Dogs.owner_id = Users.user_id
   `;
-  db.query(sql, (err, results) => {
+  
     if (err) {
       console.error('Error fetching dogs:', err);
       return res.status(500).json({ error: 'Failed to fetch dogs' });
