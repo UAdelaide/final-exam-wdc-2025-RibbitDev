@@ -112,7 +112,8 @@ app.use('/users', usersRouter);
 
 app.get('/api/dogs', (req, res) => {
   const sql = `
-    SELECT Dogs.name AS dog_name,
+    SELECT
+    Dogs.name AS dog_name,
     Dogs.size, Users.username AS owner_username
     FROM Dogs
     JOIN Users ON Dogs.owner_id = Users.user_id
@@ -129,7 +130,13 @@ app.get('/api/dogs', (req, res) => {
 
 app.get('/api/walkrequests/open', (req, res) => {
   const sql = `
-    SELECT WalkRequests.request_id, Dogs.name AS dog_name, , WalkRequests.requested_time, WalkRequests.duration_minutes, WalkRequests.location, Users.username AS owner_username
+    SELECT
+    WalkRequests.request_id,
+    Dogs.name AS dog_name,
+    WalkRequests.requested_time,
+    WalkRequests.duration_minutes,
+    WalkRequests.location,
+    Users.username AS owner_username
     FROM Dogs
     JOIN WalkRequests ON Dogs.owner_id = Users.user_id
   `;
