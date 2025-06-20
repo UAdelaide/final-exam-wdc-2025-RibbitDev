@@ -55,26 +55,35 @@ WeLCoMe To ThE dOg Of ThE dAy</h1>
 
 <button onclick="loadRandomDog()">Show Me a Random Dog</button>
 
+  <div id="loading" style="display: none;">LoAdInG yOuR dOg... PlEaSe WaIt FoReVeR...</div>
+
   <div id="dog-container">
     <img id="dog-image" src="" alt="Random Dog" style="display: none;" />
   </div>
 
   <script>
     function loadRandomDog() {
-      fetch('https://dog.ceo/api/breeds/image/random')
-        .then(response => response.json())
-        .then(data => {
-          const img = document.getElementById('dog-image');
-          img.src = data.message;
-          img.style.display = 'block';
-        })
-        .catch(err => {
-          alert('Failed to load dog image!');
-          console.error(err);
-        });
+      const img = document.getElementById('dog-image');
+      const loading = document.getElementById('loading');
+      img.style.display = 'none';
+      loading.style.display = 'block';
+
+      // Simulate annoying delay (5 seconds)
+      setTimeout(() => {
+        fetch('https://dog.ceo/api/breeds/image/random')
+          .then(response => response.json())
+          .then(data => {
+            img.src = data.message;
+            img.style.display = 'block';
+            loading.style.display = 'none';
+          })
+          .catch(err => {
+            loading.textContent = 'Oops! Something broke. Try again. 🐾';
+            console.error(err);
+          });
+      }, 5000); // 5 seconds of eternal suffering
     }
   </script>
-
 
 </body>
 </html>
