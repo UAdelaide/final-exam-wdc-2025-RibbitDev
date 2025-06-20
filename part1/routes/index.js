@@ -6,7 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-SELECT dog.dog_name, user.user
+SELECT dog.dog_name, user.username
+FROM User ON actor.actor_id = 
 router.get()
 
 module.exports = router;
