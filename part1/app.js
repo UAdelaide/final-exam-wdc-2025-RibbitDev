@@ -36,6 +36,7 @@ let db;
     // Create a table if it doesn't exist
     await db.execute(`
       CREATE TABLE IF NOT EXISTS dogs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255),
         size VARCHAR(50),
         owner_id INT,
