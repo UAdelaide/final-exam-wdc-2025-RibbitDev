@@ -40,7 +40,7 @@ app.use(function(err, req, res, next) {
 
 app.get('/api/dogs', async (req, res) => {
   try{
-  db.execute('SELECT * FROM Dogs');
+  db.query('SELECT Dogs.id_id');
     res.json(dogs);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch dogs'})
