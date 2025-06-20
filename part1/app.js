@@ -127,6 +127,15 @@ app.get('/api/dogs', (req, res) => {
   });
 });
 
+app.get('/api/dogs', async (req, res) => {
+    db.query('SELECT Dogs.dog_id, Dogs.name, Dogs.size FROM Dogs', (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Failed to fetch Dogs' });
+        }
+        res.json(results);
+    });
+});
 
 app.get('/api/walkrequests/open', (req, res) => {
   db.query('
