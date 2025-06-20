@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 
 SELECT dog.dog_name, user.username
 FROM Dog
-JON dof.actor_id =
+JOIN dog ON dog.dog_id =
 router.get()
 
 module.exports = router;
