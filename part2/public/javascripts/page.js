@@ -211,6 +211,6 @@ function logout(){
     xmlhttp.send();
 
     sessionStorage.clear();
-    window
+    window.location.href = "index.html";
 
 }
