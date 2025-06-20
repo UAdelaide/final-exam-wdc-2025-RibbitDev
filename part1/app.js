@@ -22,7 +22,7 @@ let db;
     });
 
     // Create the database if it doesn't exist
-    await connection.query('CREATE DATABASE IF NOT EXISTS testdb');
+    await connection.query('CREATE DATABASE IF NOT EXISTS DogWalkService');
     await connection.end();
 
     // Now connect to the created database
@@ -32,16 +32,6 @@ let db;
       password: '',
       database: 'DogWalkService'
     });
-
-    // Create a table if it doesn't exist
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS dogs (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255),
-        size VARCHAR(50),
-        owner_id INT,
-      )
-    `);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
