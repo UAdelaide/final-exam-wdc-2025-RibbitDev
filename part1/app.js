@@ -38,5 +38,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-SELECT 
+SELECT dog_id, name, size
+FROM Dogs
+
 module.exports = app;
