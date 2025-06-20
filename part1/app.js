@@ -38,7 +38,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/', async (req, res) => {
+//app.get('/', async (req, res) => {
   try{
     const [dog_id, size,owner.id] = await db.execute('SELECT * FROM Dogs');
     res.json(dogs);
