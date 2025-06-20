@@ -134,7 +134,7 @@ app.get('/api/walkrequests/open', (req, res) => {
   `;
   db.query(sql, (err, results) => {
     if (err) {
-      console.error('Error fetching dogs:', err);
+      console.error('Failed to fetch walkrequests:', err);
       return res.status(500).json({ error: 'Failed to fetch walkrequests' });
     }
     res.json(results);
