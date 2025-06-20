@@ -40,12 +40,11 @@ let db;
         name VARCHAR(255),
         size VARCHAR(50),
         owner_id INT,
-        FOREIGN KEY (owner_id) REFERENCES Owners(id)
       )
     `);
 
     // Insert data if table is empty
-    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM books');
+    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM ');
     if (rows[0].count === 0) {
       await db.execute(`
         INSERT INTO books (title, author) VALUES
