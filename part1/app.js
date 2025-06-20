@@ -38,6 +38,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-aoo.get('/', async )
+app.get('/', async (req, res) => {
+
+})
 
 module.exports = app;
