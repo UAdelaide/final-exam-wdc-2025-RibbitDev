@@ -70,7 +70,7 @@
           sessionStorage.setItem('username', this.username);
           sessionStorage.setItem('role', user.role);
 
-          // This redirects the user to a different page based on their account's role
+          // redirects user to a different page account's role
           if (user.role === 'owner') {
             window.location.href = 'owner-dashboard.html';
           } else if (user.role === 'walker') {
