@@ -42,7 +42,9 @@ app.get('/', async (req, res) => {
   try{
     const [dog_id] = await db.execute('SELECT * FROM Dogs');
     res.json(dogs);
-    } 
+    } catch (err) {
+      res.status()
+    }
 })
 
 module.exports = app;
