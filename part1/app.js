@@ -26,8 +26,6 @@ db.connect((err) => {
     return;
   }
   console.log('Successfully connected to MySQL');
-
-  // Seed the database after successful connection
   seedDatabase();
 });
 
@@ -66,7 +64,6 @@ function seedDatabase() {
       return;
     }
 
-    // Insert sample users
     const insertUsersSQL = `
       INSERT IGNORE INTO Users (username, email, password_hash, role) VALUES
       ('alice123', 'alice@example.com', 'hashed123', 'owner'),
@@ -77,7 +74,6 @@ function seedDatabase() {
     db.query(insertUsersSQL, (err) => {
       if (err) return console.error('Error inserting users:', err);
 
-      // Insert sample dogs
       const insertDogsSQL = `
         INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
         ((SELECT user_id FROM Users WHERE username='alice123'), 'Max', 'medium'),
@@ -96,7 +92,7 @@ function seedDatabase() {
 
         db.query(insertWalksSQL, (err) => {
           if (err) return console.error('Error inserting walk requests:', err);
-          console.log('Successfully ');
+          console.log('Successfully seeded database');
         });
       });
     });
