@@ -40,9 +40,9 @@ app.use(function(err, req, res, next) {
 
 app.get('/', async (req, res) => {
   try{
-    const [dog_id] = wait db.execute('SELECT * FROM Dogs');
-    res.json(dogs)
-  }
+    const [dog_id] = await db.execute('SELECT * FROM Dogs');
+    res.json(dogs);
+    } 
 })
 
 module.exports = app;
