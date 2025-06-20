@@ -129,6 +129,7 @@ app.get('/api/dogs', (req, res) => {
 
 
 app.get('/api/walkrequests/open', (req, res) => {
+  db.
   const sql = `
     SELECT
     WalkRequests.request_id,
