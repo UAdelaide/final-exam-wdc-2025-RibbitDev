@@ -11,50 +11,26 @@ var app = express();
 
 let db;
 
-(async () => {
-    try {
-      // Connect to MySQL without specifying a database
-      const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '' // Set your MySQL root password
-      });
+db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'DogWalkService',
+  multipleStatements: true
+});
 
-      // Create the database if it doesn't exist
-      await connection.query('CREATE DATABASE IF NOT EXISTS DogWalkService');
-      await connection.end();
+db.connect((err) => {
+  if (err) {
+    console.error('❌ Error connecting to database:', err);
+    return;
+  }
+  console.log('✅ Connected to MySQL');
 
-      // Now connect to the created database
-      db = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'DogWalkService'
-      });
+  // Seed the database after successful connection
+  seedDatabase();
+});
 
-      // Create a table if it doesn't exist
-    //   await db.execute(`
-    //     CREATE TABLE IF NOT EXISTS books (
-    //       id INT AUTO_INCREMENT PRIMARY KEY,
-    //       title VARCHAR(255),
-    //       author VARCHAR(255)
-    //     )
-    //   `);
 
-      // Insert data if table is empty
-//       const [rows] = await db.execute('SELECT COUNT(*) AS count FROM Users');
-//       if (rows[0].count === 0) {
-//         await db.execute(`
-//           INSERT INTO books (title, author) VALUES
-//           ('1984', 'George Orwell'),
-//           ('To Kill a Mockingbird', 'Harper Lee'),
-//           ('Brave New World', 'Aldous Huxley')
-//         `);
-//       }
-    } catch (err) {
-      console.error('Error setting up database. Ensure Mysql is running: service mysql start', err);
-    }
-  })();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
