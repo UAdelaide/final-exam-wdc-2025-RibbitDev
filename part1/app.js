@@ -46,6 +46,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.get('/api/dogs', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT Dogs.name AS dog_name, Dogs.size, Owners.username AS owner_username
+      FROM Dogs
+      JOIN Owners ON Dogs.owner_id = Owners.id
+    `);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch dogs' });
+  }
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -62,18 +75,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get('/api/dogs', async (req, res) => {
-  try {
-    const [rows] = await db.query(`
-      SELECT Dogs.name AS dog_name, Dogs.size, Owners.username AS owner_username
-      FROM Dogs
-      JOIN Owners ON Dogs.owner_id = Owners.id
-    `);
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch dogs' });
-  }
-});
+
 
 
 module.exports = app; }
