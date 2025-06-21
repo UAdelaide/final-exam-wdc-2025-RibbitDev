@@ -29,23 +29,6 @@
               <option v-for="dog in userDogs" :value="dog.dog_id">{{ dog.name}}</option>
               </select>
           </div>
-
-          <script>
-            new Vue({
-              el: '#app',
-              data() {
-                return {
-                  form: { dog_id: '' },
-                  userDogs: []
-                };
-              },
-              mounted() {
-                fetch('/dogs/mine')
-                  .then(res => res.json())
-                  .then(data => { this.userDogs = data; });
-              }
-            });
-          </script>
           <div class="mb-3">
             <label class="form-label">Requested Date & Time</label>
             <input v-model="form.requested_time" type="datetime-local" class="form-control" required>
