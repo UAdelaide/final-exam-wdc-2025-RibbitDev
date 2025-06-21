@@ -24,7 +24,7 @@
         <form @submit.prevent="submitWalkRequest">
           <div class="mb-3">
             <label class="form-label">Select Your Dog</label>
-            <select v-model="form.dog_id" type="number" class="form-control" required>
+            <select v-model="form.dog_id" type="number" class="form-select" required>
               <option disabled value="">-- Choose a dog --</option>
               <option v-for="dog in userDogs" :value="dog.dog_id">{{ dog.name}}</option>
               </select>
@@ -107,7 +107,7 @@
           error.value = 'Failed to load dog list';
         }
       }
-      
+
         async function submitWalkRequest() {
           try {
             const res = await fetch('/api/walks', {
