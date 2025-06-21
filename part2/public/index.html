@@ -100,7 +100,26 @@
         }
       }
     }).mount('#app');
-  </script>
+
+    async loadDogs() {
+  try {
+    const res = await fetch('/api/dogs');
+    if (!res.ok) throw new Error('Failed to fetch dogs');
+    const dogsFromDB = await res.json();
+
+    // Fetch a random image for each dog
+    const dogsWithImages = await Promise.all(dogsFromDB.map(async dog => {
+      const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
+      const imgData = await imgRes.json();
+      return { ...dog, imageUrl: imgData.message };
+    }));
+
+    this.dogs = dogsWithImages;
+  } catch (err) {
+    console.error('Error loading dogs:', err);
+  }
+}
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
