@@ -50,16 +50,16 @@
         const user = 3;
 
         async function getCurrentUser() {
-  try {
-    const res = await fetch('/api/users/me');
-    if (!res.ok) throw new Error('Failed to fetch current user');
-    const userData = await res.json();
-    return userData.user_id;  // assuming the response has a field `user_id`
-  } catch (err) {
-    console.error('Error getting current user:', err);
-    throw err;
-  }
-}
+          try {
+            const res = await fetch('/api/users/me');
+            if (!res.ok) throw new Error('Failed to fetch current user');
+            const userData = await res.json();
+            return userData.user_id;  // assuming the response has a field `user_id`
+          } catch (err) {
+            console.error('Error getting current user:', err);
+            throw err;
+          }
+        }
 
 
         async function loadWalkRequests() {
