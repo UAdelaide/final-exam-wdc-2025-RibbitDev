@@ -33,6 +33,26 @@
       </div>
     </form>
   </div>
+  <hr class="my-5">
+<h2 class="mb-3 text-secondary">Our Dogs</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Photo</th>
+      <th>Name</th>
+      <th>Breed</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="dog in dogs" :key="dog.dog_id">
+      <td><img :src="dog.imageUrl" alt="Dog Photo" style="width: 100px; height: auto;"></td>
+      <td>{{ dog.name }}</td>
+      <td>{{ dog.breed }}</td>
+      <td>{{ dog.age }} years</td>
+    </tr>
+  </tbody>
+</table>
 
 
   <script>
