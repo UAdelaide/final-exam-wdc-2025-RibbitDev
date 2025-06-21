@@ -55,71 +55,67 @@
 </table>
 
   <script>
-    const { createApp } = Vue;
+  const { createApp } = Vue;
 
-    createApp({
-      data() {
-        return {
-          // stores data for username, password, error msg
-          message: 'Welcome to the Dog Walking Service!',
-          username: '',
-          password: '',
-          dogs: [],
-          error: ''
+  createApp({
+    data() {
+      return {
+        message: 'Welcome to the Dog Walking Service!',
+        username: '',
+        password: '',
+        dogs: [],
+        error: ''
+      };
+    },
+    methods: {
+      login() {
+        const users = {
+          'alice123': { role: 'owner', password: 'hashed123' },
+          'bobwalker': { role: 'walker', password: 'hashed456' },
+          'carol123': { role: 'owner', password: 'hashed789' },
+          'davidwalker': { role: 'walker', password: 'hashed101' },
+          'emilyowner': { role: 'owner', password: 'hashed202' },
         };
+
+        const user = users[this.username];
+        if (!user || user.password !== this.password) {
+          this.error = 'Invalid username or password.';
+          return;
+        }
+
+        sessionStorage.setItem('username', this.username);
+        sessionStorage.setItem('role', user.role);
+
+        if (user.role === 'owner') {
+          window.location.href = 'owner-dashboard.html';
+        } else if (user.role === 'walker') {
+          window.location.href = 'walker-dashboard.html';
+        }
       },
-      methods: {
-        login() {
-          // sim login data
-          const users = {
-            'alice123': { role: 'owner', password: 'hashed123' },
-            'bobwalker': { role: 'walker', password: 'hashed456' },
-            'carol123': { role: 'owner', password: 'hashed789' },
-            'davidwalker': { role: 'walker', password: 'hashed101' },
-            'emilyowner': { role: 'owner', password: 'hashed202' },
-          };
 
-          const user = users[this.username];
-          // password check boolean and check if exists
-          if (!user || user.password !== this.password) {
-            this.error = 'Invalid username or password.';
-            return;
-          }
+      async loadDogs() {
+        try {
+          const res = await fetch('/api/dogs');
+          if (!res.ok) throw new Error('Failed to fetch dogs');
+          const dogsFromDB = await res.json();
 
-          // session data stored in sessionStorage
-          sessionStorage.setItem('username', this.username);
-          sessionStorage.setItem('role', user.role);
+          const dogsWithImages = await Promise.all(dogsFromDB.map(async dog => {
+            const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
+            const imgData = await imgRes.json();
+            return { ...dog, imageUrl: imgData.message };
+          }));
 
-          // redirects user to page based on account's role
-          if (user.role === 'owner') {
-            window.location.href = 'owner-dashboard.html';
-          } else if (user.role === 'walker') {
-            window.location.href = 'walker-dashboard.html';
-          }
+          this.dogs = dogsWithImages;
+        } catch (err) {
+          console.error('Error loading dogs:', err);
         }
       }
-    }).mount('#app');
-
-    async loadDogs() {
-  try {
-    const res = await fetch('/api/dogs');
-    if (!res.ok) throw new Error('Failed to fetch dogs');
-    const dogsFromDB = await res.json();
-
-    // Fetch a random image for each dog
-    const dogsWithImages = await Promise.all(dogsFromDB.map(async dog => {
-      const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
-      const imgData = await imgRes.json();
-      return { ...dog, imageUrl: imgData.message };
-    }));
-
-    this.dogs = dogsWithImages;
-  } catch (err) {
-    console.error('Error loading dogs:', err);
-  }
-}
-
-
+    },
+    mounted() {
+      this.loadDogs();
+    }
+  }).mount('#app');
+</script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
